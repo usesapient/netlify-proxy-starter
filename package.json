@@ -1,0 +1,14 @@
+{
+  "name": "netlify-proxy-starter",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Netlify Edge proxy starter for Sapient Agent Analytics on Framer and Webflow sites.",
+  "scripts": {
+    "build": "mkdir -p public",
+    "check": "node scripts/smoke-test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
