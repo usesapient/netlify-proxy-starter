@@ -15,6 +15,9 @@ This is a reverse proxy, not a browser redirect. The visitor stays on your custo
 ## Quick Start
 
 1. Deploy this repo as a Netlify site.
+
+   [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/usesapient/netlify-proxy-starter)
+
 2. Add your test custom domain to the Netlify site, for example:
 
    ```text
