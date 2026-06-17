@@ -5,7 +5,6 @@ import handler from "../netlify/edge-functions/sapient-proxy.js";
 function resetEnv() {
   delete process.env.ORIGIN_URL;
   delete process.env.SAPIENT_API_KEY;
-  delete process.env.SAPIENT_ENDPOINT;
   delete process.env.SAPIENT_SITE_PROVIDER;
   delete process.env.SITE_PROVIDER;
   delete process.env.SAPIENT_TRACKING_SOURCE;
@@ -15,7 +14,6 @@ async function testSuccessfulProxyAndTracking() {
   resetEnv();
   process.env.ORIGIN_URL = "https://origin.example/base";
   process.env.SAPIENT_API_KEY = "sap_test";
-  process.env.SAPIENT_ENDPOINT = "https://api.example/track";
   process.env.SITE_PROVIDER = "framer";
   process.env.SAPIENT_TRACKING_SOURCE = "netlify_edge_proxy";
 
@@ -31,7 +29,10 @@ async function testSuccessfulProxyAndTracking() {
       });
     }
 
-    if (url.toString() === "https://api.example/track") {
+    if (
+      url.toString() ===
+      "https://api.usesapient.com/api/v1/agent-tracking/track"
+    ) {
       return new Response(JSON.stringify({ ok: true }), {
         status: 200,
         headers: { "content-type": "application/json" },
@@ -62,7 +63,10 @@ async function testSuccessfulProxyAndTracking() {
   await Promise.all(waitUntil);
 
   assert.equal(calls[0].url, "https://origin.example/base/docs?q=1");
-  assert.equal(calls[1].url, "https://api.example/track");
+  assert.equal(
+    calls[1].url,
+    "https://api.usesapient.com/api/v1/agent-tracking/track",
+  );
 
   const trackingBody = JSON.parse(calls[1].init.body);
   assert.equal(trackingBody.host, "agent-test.example.com");
@@ -77,7 +81,6 @@ async function testTrackingFailureDoesNotBreakProxy() {
   resetEnv();
   process.env.ORIGIN_URL = "https://origin.example";
   process.env.SAPIENT_API_KEY = "sap_test";
-  process.env.SAPIENT_ENDPOINT = "https://api.example/track";
 
   const originalFetch = globalThis.fetch;
   globalThis.fetch = async (url) => {
@@ -107,7 +110,6 @@ async function testOriginFailureDoesNotTrack() {
   resetEnv();
   process.env.ORIGIN_URL = "https://origin.example";
   process.env.SAPIENT_API_KEY = "sap_test";
-  process.env.SAPIENT_ENDPOINT = "https://api.example/track";
 
   const calls = [];
   const originalFetch = globalThis.fetch;

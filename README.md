@@ -51,7 +51,6 @@ This is a reverse proxy, not a browser redirect. The visitor stays on your custo
 | `ORIGIN_URL` | Yes | `https://your-site.framer.website` | Framer/Webflow platform origin. Do not use your custom domain here. |
 | `SITE_PROVIDER` | Recommended | `framer` or `webflow` | Used to segment analytics by platform. |
 | `SAPIENT_TRACKING_SOURCE` | Recommended | `netlify_edge_proxy` | Identifies this traffic as Netlify Edge proxy traffic. |
-| `SAPIENT_ENDPOINT` | No | `https://api.usesapient.com/api/v1/agent-tracking/track` | Only set this for local/dev API testing. |
 
 ## Netlify DNS Test With An Existing DNS Provider
 
@@ -100,6 +99,7 @@ The proxy only returns an error response when:
 ## Local Smoke Test
 
 ```bash
+npm install
 npm run check
 ```
 
